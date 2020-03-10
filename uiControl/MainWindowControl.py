@@ -21,13 +21,16 @@ class MainWindowControl(QMainWindow):
         self.generator_started = False
         self._attack_length = 0
         self._normal_length = 50
-        self.pushButton_generate_data.clicked.connect(self.start_printing)
+        # self.pushButton_generate_data.clicked.connect(self.start_printing)
         # self.pushButton_generate_attack.clicked.connect(self.generate_attack)
         self.pushButton_save_data.clicked.connect(self.write_to_file)
         self.About.triggered.connect(self.show_info_window)
 
         self.plot_timer = QTimer()
         self.plot_timer.timeout.connect(self.update_graph)
+
+        self.is_attack = False
+        self.start_printing()
 
     def show_info_window(self):
         self.info_window.show()
@@ -41,6 +44,18 @@ class MainWindowControl(QMainWindow):
             self.generator_started = True
 
     def update_graph(self):
+        if self.is_attack:
+            self.generate_attack()
+        else:
+            self.generate_normal()
+
+    def start_attack(self):
+        self.is_attack = True
+
+    def stop_attack(self):
+        self.is_attack = False
+
+    def manual_update_graph(self):
         if self._attack_length:
             self._attack_length -= 1
             self.generate_attack()

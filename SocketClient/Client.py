@@ -1,7 +1,7 @@
 from threading import Thread, Timer
 import socket
 import json
-from Messages import StopAttackMessage, StartAttackMessage
+from Messages import StopAttackMessage, StartAttackMessage, GetStatus, ClientStatus
 
 
 SERVER_ADDRESS = ('127.0.0.1', 8080)
@@ -22,26 +22,37 @@ class ClientSocket(Thread):
         print("Connect...")
         try:
             self._socket.connect(SERVER_ADDRESS)
+            print("Wait data...")
+            self.listen_socket()
         except ConnectionRefusedError:
             print("Problems while connecting, wait 10 sec")
             Timer(10, self.connect).start()
             self._reconnect = True
 
-        else:
-            self.listen_socket()
-
     def listen_socket(self):
         while True:
-            print("Wait data...")
             data = self.receive_message()
             if len(data):
                 print("o: {}".format(data))
                 message = json.loads(data)
                 if 't' in message:
-                    if message['t'] == StartAttackMessage().tag:
+                    if message['t'] == StartAttackMessage.tag:
                         self._window.start_attack()
-                    elif message['t'] == StopAttackMessage().tag:
+                    elif message['t'] == StopAttackMessage.tag:
                         self._window.stop_attack()
+                    elif message['t'] == GetStatus.tag:
+                        self._send_status()
+
+    def _send_status(self):
+        status = ClientStatus()
+        status.CPU = self._window.graph_creator.CPU
+        status.RAM = self._window.graph_creator.RAM
+        status.Connects = self._window.graph_creator.Connect
+        status.Traffic = self._window.graph_creator.TrafficSum
+        self.send_message(status.get_message())
+
+    def send_message(self, message):
+        self._socket.send(message)
 
     def receive_message(self):
-        return self._socket.recv(2048).decode("UTF-8")
+        return self._socket.recv(20480).decode("UTF-8")

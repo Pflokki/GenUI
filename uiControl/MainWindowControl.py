@@ -21,6 +21,8 @@ class MainWindowControl(QMainWindow):
         self.generator_started = False
         self._attack_length = 0
         self._normal_length = 50
+        self.is_attack = False
+        self.set_warning_text()
         # self.pushButton_generate_data.clicked.connect(self.start_printing)
         # self.pushButton_generate_attack.clicked.connect(self.generate_attack)
         self.pushButton_save_data.clicked.connect(self.write_to_file)
@@ -29,11 +31,13 @@ class MainWindowControl(QMainWindow):
         self.plot_timer = QTimer()
         self.plot_timer.timeout.connect(self.update_graph)
 
-        self.is_attack = False
         self.start_printing()
 
     def show_info_window(self):
         self.info_window.show()
+
+    def show_warning_window(self):
+        self.warning_window.show()
 
     def start_printing(self):
         if self.generator_started:
@@ -51,9 +55,17 @@ class MainWindowControl(QMainWindow):
 
     def start_attack(self):
         self.is_attack = True
+        self.set_warning_text()
 
     def stop_attack(self):
         self.is_attack = False
+        self.set_warning_text()
+
+    def set_warning_text(self):
+        if self.is_attack:
+            self.l_warning.setText("Внмание! На данное устройство производится DDoS-аттака.")
+        else:
+            self.l_warning.setText("Устройство работает в нормальном режиме.")
 
     def manual_update_graph(self):
         if self._attack_length:

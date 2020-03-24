@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>910</width>
-    <height>703</height>
+    <width>1072</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -20,7 +20,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,10">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,10,0">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -63,7 +63,37 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QWidget" name="widget" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="MplWidget" name="MplWidget_CPU" native="true"/>
+           </item>
+           <item>
+            <widget class="MplWidget" name="MplWidget_RAM" native="true"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="MplWidget" name="MplWidget_Traffic" native="true"/>
+           </item>
+           <item>
+            <widget class="MplWidget" name="MplWidget_Connects" native="true"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,1">
       <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
@@ -79,10 +109,16 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_save_data">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
-          <height>40</height>
+          <width>150</width>
+          <height>30</height>
          </size>
         </property>
         <property name="font">
@@ -93,9 +129,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Записать 
-данные
-</string>
+         <string>Сохранить данные</string>
         </property>
        </widget>
       </item>
@@ -114,54 +148,6 @@
       </item>
      </layout>
     </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QWidget" name="widget" native="true">
-        <widget class="MplWidget" name="MplWidget_CPU" native="true">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>10</y>
-           <width>421</width>
-           <height>261</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="MplWidget" name="MplWidget_Traffic" native="true">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>280</y>
-           <width>431</width>
-           <height>261</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="MplWidget" name="MplWidget_RAM" native="true">
-         <property name="geometry">
-          <rect>
-           <x>450</x>
-           <y>10</y>
-           <width>421</width>
-           <height>261</height>
-          </rect>
-         </property>
-        </widget>
-        <widget class="MplWidget" name="MplWidget_Connects" native="true">
-         <property name="geometry">
-          <rect>
-           <x>450</x>
-           <y>280</y>
-           <width>421</width>
-           <height>261</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -169,7 +155,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>910</width>
+     <width>1072</width>
      <height>22</height>
     </rect>
    </property>

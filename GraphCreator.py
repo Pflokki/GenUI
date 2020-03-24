@@ -44,6 +44,15 @@ class GraphCreator:
         random_ram_value = random.uniform(97, 100)
         random_connect_value = random.randint(95, 100)
         random_traffic_sum_value = random.randint(8000, 10000)
+
+        try:
+            random_cpu_value = min(self._CPU[-1] * 1.15, random_cpu_value)
+            random_ram_value = min(self._RAM[-1] * 1.15, random_ram_value)
+            random_connect_value = min(self._Connect[-1] * 1.15, random_connect_value)
+            random_traffic_sum_value = min(self._TrafficSum[-1] * 1.15, random_traffic_sum_value)
+        except IndexError:
+            pass
+
         self.add_tick(random_cpu_value, random_ram_value, random_connect_value, random_traffic_sum_value)
 
     def write_to_file(self, output_file=""):

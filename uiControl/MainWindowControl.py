@@ -22,6 +22,7 @@ class MainWindowControl(QMainWindow):
         self._attack_length = 0
         self._normal_length = 50
         self.is_attack = False
+        self.is_die = False
         self.set_warning_text()
         # self.pushButton_generate_data.clicked.connect(self.start_printing)
         # self.pushButton_generate_attack.clicked.connect(self.generate_attack)
@@ -48,10 +49,13 @@ class MainWindowControl(QMainWindow):
             self.generator_started = True
 
     def update_graph(self):
-        if self.is_attack:
-            self.generate_attack()
+        if self.is_die:
+            self.generate_die_data()
         else:
-            self.generate_normal()
+            if self.is_attack:
+                self.generate_attack()
+            else:
+                self.generate_normal()
 
     def start_attack(self):
         self.is_attack = True
@@ -61,11 +65,18 @@ class MainWindowControl(QMainWindow):
         self.is_attack = False
         self.set_warning_text()
 
+    def die(self):
+        self.is_die = True
+        self.set_warning_text()
+
     def set_warning_text(self):
-        if self.is_attack:
-            self.l_warning.setText("Внмание! На данное устройство производится DDoS-аттака.")
+        if self.is_die:
+            self.l_warning.setText("Внмание! Устройство не отвечает.")
         else:
-            self.l_warning.setText("Устройство работает в нормальном режиме.")
+            if self.is_attack:
+                self.l_warning.setText("Внмание! На данное устройство производится DDoS-аттака.")
+            else:
+                self.l_warning.setText("Устройство работает в нормальном режиме.")
 
     def manual_update_graph(self):
         if self._attack_length:
@@ -84,6 +95,10 @@ class MainWindowControl(QMainWindow):
     def generate_attack(self):
         self.graph_creator.generate_attack()
         MainWindowControl.plotting_pictures(self)  # plotting attack plots
+
+    def generate_die_data(self):
+        self.graph_creator.generate_die_data()
+        MainWindowControl.plotting_pictures(self)  # plotting die plots
 
     def init_plot(self):
         self.MplWidget_CPU.canvas.axes.set_title('Нагрузка ЦП, %')

@@ -1,7 +1,7 @@
 from threading import Thread, Timer
 import socket
 import json
-from Messages import StopAttackMessage, StartAttackMessage, GetStatus, ClientStatus
+from Messages import StopAttackMessage, StartAttackMessage, GetStatus, ClientStatus, DieMessage
 
 
 SERVER_ADDRESS = ('127.0.0.1', 8080)
@@ -18,6 +18,11 @@ class ClientSocket(Thread):
     def run(self) -> None:
         self.connect()
 
+    def reconnect(self):
+        print("Problems while connecting, wait 10 sec")
+        Timer(10, self.connect).start()
+        self._reconnect = True
+
     def connect(self):
         print("Connect...")
         try:
@@ -25,9 +30,7 @@ class ClientSocket(Thread):
             print("Wait data...")
             self.listen_socket()
         except ConnectionRefusedError:
-            print("Problems while connecting, wait 10 sec")
-            Timer(10, self.connect).start()
-            self._reconnect = True
+            self.reconnect()
 
     def listen_socket(self):
         while True:
@@ -42,6 +45,8 @@ class ClientSocket(Thread):
                         self._window.stop_attack()
                     elif message['t'] == GetStatus.tag:
                         self._send_status()
+                    elif message['t'] == DieMessage.tag:
+                        self._window.die()
 
     def _send_status(self):
         status = ClientStatus()

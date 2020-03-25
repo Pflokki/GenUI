@@ -40,6 +40,13 @@ class GetStatus(Message):
         super().__init__()
 
 
+class DieMessage(Message):
+    tag = "Die"
+
+    def __init__(self):
+        super().__init__()
+
+
 class ClientStatus(Message):
     tag = "ClientStatus"
 

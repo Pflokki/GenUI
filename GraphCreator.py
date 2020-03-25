@@ -55,6 +55,9 @@ class GraphCreator:
 
         self.add_tick(random_cpu_value, random_ram_value, random_connect_value, random_traffic_sum_value)
 
+    def generate_die_data(self):
+        self.add_tick(0, 0, 0, 0)
+
     def write_to_file(self, output_file=""):
         with open('./logs/meta_CPU.txt', 'w') as output_file:
             output_file.writelines("%s\n" % i for i in self._CPU)

@@ -1,4 +1,6 @@
+import time
 import random
+import json
 
 MAX_POINT = 150
 
@@ -9,6 +11,8 @@ class GraphCreator:
         self._RAM = []
         self._Connect = []
         self._TrafficSum = []
+
+        self._AttackLabel = []
 
     @property
     def CPU(self):
@@ -58,12 +62,39 @@ class GraphCreator:
     def generate_die_data(self):
         self.add_tick(0, 0, 0, 0)
 
-    def write_to_file(self, output_file=""):
-        with open('./logs/meta_CPU.txt', 'w') as output_file:
-            output_file.writelines("%s\n" % i for i in self._CPU)
-        with open('./logs/meta_RAM.txt', 'w') as output_file:
-            output_file.writelines("%s\n" % i for i in self._RAM)
-        with open('./logs/meta_Connect.txt', 'w') as output_file:
-            output_file.writelines("%s\n" % i for i in self._Connect)
-        with open('./logs/meta_TrafficSum.txt', 'w') as output_file:
-            output_file.writelines("%s\n" % i for i in self._TrafficSum)
+    def create_train_data(self, data_size=10000, attack_ver=0.2):
+        while len(self._AttackLabel) < data_size:
+            if random.randint(0, 10) / 10 <= attack_ver:
+                attack_length = random.randint(0, 50)
+                while attack_length > 0:
+                    attack_length -= 1
+                    self.generate_attack()
+                    self._AttackLabel.append(1)
+            else:
+                normal_work_length = random.randint(0, 100)
+                while normal_work_length > 0:
+                    normal_work_length -= 1
+                    self.update_graph()
+                    self._AttackLabel.append(0)
+
+        train_data, train_predicate = [], []
+        for index in range(len(self._AttackLabel)):
+            train_data.append(
+                (self._CPU[index], self._RAM[index],
+                 self._TrafficSum[index], self._Connect[index])
+            )
+            train_predicate.append(self._AttackLabel[index])
+
+        return train_data[:data_size], train_predicate[:data_size]
+
+    def write_to_file(self, train_data, train_predicate):
+        time_postfix = time.strftime('%Y-%M-%d-%H:%M:%S', time.gmtime())
+        with open('./logs/[{}]train_data.txt'.format(time_postfix), 'w') as file:
+            for items in zip(train_data, train_predicate):
+                file.write(json.dumps(items) + '\n')
+
+
+if __name__ == '__main__':
+    gc = GraphCreator()
+    train_data, train_predicate = gc.create_train_data(10000, 0.2)
+    gc.write_to_file(train_data, train_predicate)

@@ -128,10 +128,10 @@ class MainWindowControl(QMainWindow):
 
         self.init_plot()
 
-        self.MplWidget_CPU.canvas.axes.plot(self.graph_creator.CPU)
-        self.MplWidget_RAM.canvas.axes.plot(self.graph_creator.RAM)
-        self.MplWidget_Connects.canvas.axes.plot(self.graph_creator.Connect)
-        self.MplWidget_Traffic.canvas.axes.plot(self.graph_creator.TrafficSum)
+        self.MplWidget_CPU.canvas.axes.plot(self.graph_creator.cpu)
+        self.MplWidget_RAM.canvas.axes.plot(self.graph_creator.ram)
+        self.MplWidget_Connects.canvas.axes.plot(self.graph_creator.connection_value)
+        self.MplWidget_Traffic.canvas.axes.plot(self.graph_creator.traffic_value)
 
         self.MplWidget_CPU.canvas.draw()
         self.MplWidget_RAM.canvas.draw()
@@ -139,4 +139,7 @@ class MainWindowControl(QMainWindow):
         self.MplWidget_Traffic.canvas.draw()
 
     def write_to_file(self):
-        self.graph_creator.write_to_file()
+        train_data, train_predicate = self.graph_creator.train_data_formatter()
+        self.graph_creator.write_to_file(
+            train_data, train_predicate
+        )

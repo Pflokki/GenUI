@@ -50,10 +50,10 @@ class ClientSocket(Thread):
 
     def _send_status(self):
         status = ClientStatus()
-        status.CPU = self._window.graph_creator.CPU
-        status.RAM = self._window.graph_creator.RAM
-        status.Connects = self._window.graph_creator.Connect
-        status.Traffic = self._window.graph_creator.TrafficSum
+        status.CPU = self._window.graph_creator.cpu
+        status.RAM = self._window.graph_creator.ram
+        status.Connects = self._window.graph_creator.connection_value
+        status.Traffic = self._window.graph_creator.traffic_value
         self.send_message(status.get_message())
 
     def send_message(self, message):

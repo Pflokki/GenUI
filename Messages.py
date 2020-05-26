@@ -52,18 +52,18 @@ class ClientStatus(Message):
 
     def __init__(self):
         super().__init__()
-        self.CPU = []
-        self.RAM = []
-        self.Connects = []
-        self.Traffic = []
+        self.cpu = []
+        self.ram = []
+        self.connection_value = []
+        self.traffic_value = []
 
     def get_message(self):
         return json.dumps({
             't': self.tag,
-            'cpu': self.CPU,
-            'ram': self.RAM,
-            'connects': self.Connects,
-            'traffic': self.Traffic,
+            'cpu': self.cpu,
+            'ram': self.ram,
+            'connects': self.connection_value,
+            'traffic': self.traffic_value,
         }).encode()
 
     @classmethod
@@ -71,10 +71,10 @@ class ClientStatus(Message):
         if 't' in msg:
             if msg['t'] == cls.tag:
                 instance = cls()
-                instance.CPU = msg['cpu']
-                instance.RAM = msg['ram']
-                instance.Connects = msg['connects']
-                instance.Traffic = msg['traffic']
+                instance.cpu = msg['cpu']
+                instance.ram = msg['ram']
+                instance.connection_value = msg['connects']
+                instance.traffic_value = msg['traffic']
                 return instance
         else:
             raise TypeError

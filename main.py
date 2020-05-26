@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import QApplication
 from uiControl.MainWindowControl import MainWindowControl
-from SocketClient.Client import ClientSocket
+from SocketClient.Client import SocketClient
 
 
 def main():
     app = QApplication([])
     window = MainWindowControl()
-    tcp_client = ClientSocket(window)
+    tcp_client = SocketClient(window)
     tcp_client.start()
     window.show()
     app.exec_()

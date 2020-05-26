@@ -7,7 +7,7 @@ from Messages import StopAttackMessage, StartAttackMessage, GetStatus, ClientSta
 SERVER_ADDRESS = ('127.0.0.1', 8080)
 
 
-class ClientSocket(Thread):
+class SocketClient(Thread):
     def __init__(self, window):
         super().__init__()
         print("Create connection")
@@ -50,10 +50,10 @@ class ClientSocket(Thread):
 
     def _send_status(self):
         status = ClientStatus()
-        status.CPU = self._window.graph_creator.cpu
-        status.RAM = self._window.graph_creator.ram
-        status.Connects = self._window.graph_creator.connection_value
-        status.Traffic = self._window.graph_creator.traffic_value
+        status.cpu = self._window.graph_creator.cpu
+        status.ram = self._window.graph_creator.ram
+        status.connection_value = self._window.graph_creator.connection_value
+        status.traffic_value = self._window.graph_creator.traffic_value
         self.send_message(status.get_message())
 
     def send_message(self, message):

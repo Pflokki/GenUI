@@ -5,11 +5,12 @@ import json
 MAX_POINT = 150
 
 
-class GraphCreator:
+class WebTrafficCreator:
     def __init__(self):
         self._cpu = []
         self._ram = []
-        self._connection_value = []
+        self._connection_count = []
+        self._tcp_connection_count = []
         self._traffic_value = []
 
         self._attack_labels = []
@@ -24,7 +25,7 @@ class GraphCreator:
 
     @property
     def connection_value(self):
-        return self._connection_value[-MAX_POINT:]
+        return self._connection_count[-MAX_POINT:]
 
     @property
     def traffic_value(self):
@@ -33,7 +34,7 @@ class GraphCreator:
     def add_tick(self, cpu_value, ram_value, connect_value, traffic_sum_value, is_attack):
         self._cpu.append(cpu_value)
         self._ram.append(ram_value)
-        self._connection_value.append(connect_value)
+        self._connection_count.append(connect_value)
         self._traffic_value.append(traffic_sum_value)
         self._attack_labels.append(int(is_attack))
 
@@ -55,7 +56,7 @@ class GraphCreator:
         try:
             random_cpu_value = min(self._cpu[-1] * 1.15, random_cpu_value)
             random_ram_value = min(self._ram[-1] * 1.15, random_ram_value)
-            random_connect_value = min(self._connection_value[-1] * 1.15, random_connect_value)
+            random_connect_value = min(self._connection_count[-1] * 1.15, random_connect_value)
             random_traffic_sum_value = min(self._traffic_value[-1] * 1.15, random_traffic_sum_value)
         except IndexError:
             pass
@@ -91,7 +92,7 @@ class GraphCreator:
         for index in range(len(self._attack_labels)):
             train_data.append(
                 (self._cpu[index], self._ram[index],
-                 self._traffic_value[index], self._connection_value[index])
+                 self._traffic_value[index], self._connection_count[index])
             )
             train_predicate.append(self._attack_labels[index])
 
@@ -106,6 +107,6 @@ class GraphCreator:
 
 
 if __name__ == '__main__':
-    gc = GraphCreator()
+    gc = WebTrafficCreator()
     train_data, train_predicate = gc.create_train_data(10000, 0.2)
     gc.write_to_file(train_data, train_predicate)

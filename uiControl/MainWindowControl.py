@@ -5,7 +5,7 @@ from PyQt5.uic import loadUi
 
 from uiControl.InfoWindowControl import InfoWindow
 
-from GraphCreator import GraphCreator
+from TrafficCreator.WebTrafficCreator import WebTrafficCreator
 
 
 class MainWindowControl(QMainWindow):
@@ -14,7 +14,7 @@ class MainWindowControl(QMainWindow):
         loadUi("./ui/design.ui", self)
 
         self.setWindowTitle("Генератор данных")
-        self.graph_creator = GraphCreator()
+        self.graph_creator = WebTrafficCreator()
         self.info_window = InfoWindow()
         self.init_plot()
 

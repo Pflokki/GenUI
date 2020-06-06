@@ -121,7 +121,7 @@ class TrafficBucket:
         dns_count = int(random.randint(ATTACK_DNS_PERCENTAGE_MIN, ATTACK_DNS_PERCENTAGE_MAX)
                         / 100 * bucket_size)
         icmp_count = int(random.randint(ATTACK_ICMP_PERCENTAGE_MIN, ATTACK_ICMP_PERCENTAGE_MAX)
-                        / 100 * bucket_size)
+                         / 100 * bucket_size)
         other_count = bucket_size - sum([ip_count, tcp_count, telnet_count, pop3_count,
                                          udp_count, dns_count, icmp_count])
 

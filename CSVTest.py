@@ -20,8 +20,7 @@ UDPLag = r'UDPLag.csv'  # 312 Mb
 
 def test_read_from_zip():
     zp = ZipFile(Path(WINDOW_PATH).joinpath(ZIP_FILE_NAME))
-    csv_file_name = str(Path(DIRECTORY_NAME).joinpath(LDAP))
-    csv_file_name = r'03-11/LDAP.csv'
+    csv_file_name = Path(DIRECTORY_NAME).joinpath(LDAP).as_posix()
     io_file = TextIOWrapper(zp.open(csv_file_name))
     with io_file as dataset:
         data = csv.DictReader(dataset)
